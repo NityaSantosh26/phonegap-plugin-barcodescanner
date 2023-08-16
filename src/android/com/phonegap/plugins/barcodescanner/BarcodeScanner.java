@@ -37,6 +37,7 @@ public class BarcodeScanner extends CordovaPlugin {
     public static final int REQUEST_CODE = 0x0ba7c;
 
     private static final String SCAN = "scan";
+    private static final String CLOSE = "close";
     private static final String ENCODE = "encode";
     private static final String CANCELLED = "cancelled";
     private static final String FORMAT = "format";
@@ -121,6 +122,10 @@ public class BarcodeScanner extends CordovaPlugin {
             } else {
               scan(args);
             }
+        } else if (action.equals(CLOSE)) {
+            Intent intent = new Intent("barcode-scanner-close");
+            LocalBroadcastManager.getInstance(cordova.getActivity().getBaseContext()).sendBroadcast(intent);
+            callbackContext.success("success");
         } else {
             return false;
         }
