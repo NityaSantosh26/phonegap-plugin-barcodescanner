@@ -158,8 +158,8 @@ BarcodeScanner.prototype.scan = function (successCallback, errorCallback, config
          * @param {Function} successCallback This function will recieve a result string: {}
          * @param {Function} errorCallback
          */
-        BarcodeScanner.prototype.close = function (successCallback, errorCallback) {
-          exec(successCallback, errorCallback, 'BarcodeScanner', 'close', [
+        BarcodeScanner.prototype.stop = function (successCallback, errorCallback) {
+          exec(successCallback, errorCallback, 'BarcodeScanner', 'stop', [
                   {}
               ]);
             scanInProgress = false;
