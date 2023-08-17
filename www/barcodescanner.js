@@ -152,5 +152,18 @@ BarcodeScanner.prototype.scan = function (successCallback, errorCallback, config
             ]);
         };
 
+        /**
+         * close scanner.
+         *
+         * @param {Function} successCallback This function will recieve a result string: {}
+         * @param {Function} errorCallback
+         */
+        BarcodeScanner.prototype.close = function (successCallback, errorCallback) {
+          exec(successCallback, errorCallback, 'BarcodeScanner', 'close', [
+                  {}
+              ]);
+            scanInProgress = false;
+        };
+
         var barcodeScanner = new BarcodeScanner();
         module.exports = barcodeScanner;
