@@ -36,7 +36,6 @@
 // plugin class
 //------------------------------------------------------------------------------
 @interface CDVBarcodeScanner : CDVPlugin {}
-@property (nonatomic, retain) CDVbcsProcessor*  processor;
 
 - (NSString*)isScanNotPossible;
 - (void)scan:(CDVInvokedUrlCommand*)command;
@@ -126,6 +125,7 @@
 // plugin class
 //------------------------------------------------------------------------------
 @implementation CDVBarcodeScanner
+CDVbcsProcessor*  processor;
 
 //--------------------------------------------------------------------------
 - (NSString*)isScanNotPossible {
@@ -156,15 +156,8 @@
   return NO;
 }
 
-- (void)stop:(CDVInvokedUrlCommand*)command {
-    NSLog(@"------------stop-------");
-    [self.processor performSelector:@selector(stopBarcode) withObject:nil afterDelay:0];
-}
-
-
 //--------------------------------------------------------------------------
 - (void)scan:(CDVInvokedUrlCommand*)command {
-    CDVbcsProcessor* processor;
     NSString*       callback;
     NSString*       capabilityError;
 
@@ -227,6 +220,22 @@
     processor.formats = options[@"formats"];
 
     [processor performSelector:@selector(scanBarcode) withObject:nil afterDelay:0];
+}
+
+- (void)stop:(CDVInvokedUrlCommand*)command {
+	NSString*       callback;
+    callback = command.callbackId;
+	
+    [processor performSelector:@selector(stopBarcode) withObject:nil afterDelay:0];
+	if (processor.isFlipped) {
+		processor.isFlipped = NO;
+	}
+
+    CDVPluginResult* result = [CDVPluginResult
+                               resultWithStatus: CDVCommandStatus_OK
+                               messageAsString: @"cancelled"
+                               ];
+    [self.commandDelegate sendPluginResult:result callbackId:callback];
 }
 
 //--------------------------------------------------------------------------
